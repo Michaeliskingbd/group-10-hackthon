@@ -1,9 +1,10 @@
 import React from "react";
+import Hello from "./component/Hello";
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-red-500">App</h1>
+      <Hello />
     </div>
   );
 };
