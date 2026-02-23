@@ -1,9 +1,11 @@
 import React from "react";
+import Hero from "./pages/Hero";
+
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-red-500">App</h1>
+    <Hero />
     </div>
   );
 };
