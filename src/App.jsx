@@ -1,13 +1,16 @@
 import React from "react";
-import Home from "./page/Home";
+import Card from "./ui/Card";
 
-import ExplorePage from "./page/ExplorePage";
+import CardsSection from "./components/CardSection";
+import Features from "./components/Features";
 
 const App = () => {
   return (
     <div>
-     {/* <Home />
-     <ExplorePage /> */}
+      <h1 className="text-red-500">App</h1>
+    
+      <CardsSection/>
+     
     </div>
   );
 };
