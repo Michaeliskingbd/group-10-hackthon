@@ -1,9 +1,13 @@
 import React from "react";
+import Home from "./page/Home";
+
+import ExplorePage from "./page/ExplorePage";
 
 const App = () => {
   return (
     <div>
-      <h1 className="text-red-500">App</h1>
+     {/* <Home />
+     <ExplorePage /> */}
     </div>
   );
 };
