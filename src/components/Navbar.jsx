@@ -1,9 +1,21 @@
 import React from "react";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Link } from "react-scroll";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const navigate = useNavigate();
+
+  const goto = () => {
+    navigate('/form');
+    window.scroll(0,0)
+  }
+
+  const howitworks = () => {
+    navigate('/howitworks')
+  }
 
   // NavLink className helper — active = underlined, inactive = gray
   const navClass = ({ isActive }) =>
@@ -15,7 +27,7 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
-        {/* ── Logo ── */}
+      
         <NavLink to="/" className="flex items-center gap-2 flex-shrink-0">
           <div className="w-9 h-9 rounded-xl bg-gray-900 flex items-center justify-center">
             <span className="text-white text-sm font-bold">SL</span>
@@ -23,24 +35,27 @@ export default function Navbar() {
           <span className="font-bold text-gray-900 text-lg">StageLink</span>
         </NavLink>
 
-        {/* ── Desktop links ── */}
+       
         <div className="hidden md:flex items-center gap-8 text-sm">
           <NavLink to="/explore"     className={navClass}>Explore Talents</NavLink>
-          <NavLink to="/categories"  className={navClass}>Categories</NavLink>
-          <NavLink to="/how-it-works" className={navClass}>How It Works</NavLink>
-        </div>
+          <p   className={navClass}>Categories </p>
+          <Link to="howItworks" smooth={true} duration={500}>
+          <p   className={navClass}>How It Works</p>
+          </Link>
+          
+        </div> 
 
-        {/* ── Desktop auth buttons ── */}
+      
         <div className="hidden md:flex items-center gap-3">
-          <button className="text-sm text-gray-700 font-medium px-3 py-2 hover:text-gray-900 transition-colors">
+          <button  className="text-sm text-gray-700 font-medium px-3 py-2 hover:text-gray-900 transition-colors">
             Log In
           </button>
-          <button className="text-sm bg-gray-900 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-700 transition-colors">
+          <button onClick={goto} className="text-sm bg-gray-900 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-700 transition-colors">
             Create Profile
           </button>
         </div>
 
-        {/* ── Mobile hamburger ── */}
+      
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
