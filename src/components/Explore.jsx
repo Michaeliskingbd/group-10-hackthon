@@ -7,14 +7,14 @@ const MAX_PRICE = 500000;
 
 export default function Explore() {
   // ── Top bar state ─────────────────────────────────────────────────────────
-  const [search, setSearch]                   = useState("");
+  const [search, setSearch]  = useState("");
   const [categoryDropdown, setCategoryDropdown] = useState("All Categories");
   const [sectionDropdown, setSectionDropdown]   = useState("All Sections");
 
-  // ── Sidebar state ─────────────────────────────────────────────────────────
+  // use state for category selection
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeSection, setActiveSection]   = useState("All");
-  const [priceRange, setPriceRange]         = useState(MAX_PRICE);
+  const [priceRange, setPriceRange]    = useState(MAX_PRICE);
 
   // ── Mobile filter drawer ──────────────────────────────────────────────────
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,7 +49,8 @@ export default function Explore() {
       const matchSearch =
         t.name.toLowerCase().includes(search.toLowerCase()) ||
         t.category.toLowerCase().includes(search.toLowerCase()) ||
-        t.bio.toLowerCase().includes(search.toLowerCase());
+        t.bio.toLowerCase().includes(search.toLowerCase()) 
+        
 
       const matchCategory = activeCategory === "All" || t.category === activeCategory;
 

@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { FiSearch, FiMapPin } from "react-icons/fi";
 import { IoMdMenu, IoMdClose } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate()
+
+  const goto = () => {
+    navigate('/form')
+    window.scroll(0,0)
+  }
 
   return (
     <div className="antialiased font-sans">
@@ -29,7 +36,7 @@ const Navbar = () => {
 
           <div className="hidden lg:flex gap-4 items-center">
             <button className="font-semibold text-gray-700 hover:text-teal-700 transition">Log In</button>
-            <button className="bg-[#1C2534] text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition">
+            <button onClick={goto} className="bg-[#1C2534] text-white px-5 py-2.5 rounded-xl font-semibold hover:bg-opacity-90 transition">
               Create Profile
             </button>
           </div>
