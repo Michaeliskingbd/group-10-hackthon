@@ -1,8 +1,29 @@
-import React from 'react';
+import Aos from 'aos';
+import React, { useEffect } from 'react';
+import { useNavigate } from "react-router-dom"
+import "aos/dist/aos.css";;
+
 
 const RoleSelection = () => {
+
+   const goto = useNavigate()
+
+   function handlegoto (){
+      goto('/form')
+      wiindow.scroll(0,0)
+   }
+
+   function handleExplore() {
+    goto('/explore')
+    window.scroll(0,0)
+   }
+
+    useEffect(() => {
+       Aos.init()
+    },[])
+  
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6" data-aos = "fade-up" data-aos-duration ='700'>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl w-full">
         
         {/* Card 1: Become a Talent */}
@@ -16,7 +37,9 @@ const RoleSelection = () => {
           <p className="text-gray-500 leading-relaxed mb-10 max-w-sm">
             Showcase your skills, get discovered by brands and event organizers, and grow your career.
           </p>
-          <button className="w-full sm:w-auto px-10 py-3.5 bg-[#FBBF24] hover:bg-[#F59E0B] text-gray-900 font-bold rounded-xl transition-colors">
+          <button
+           onClick={handlegoto}
+          className="w-full sm:w-auto px-10 py-3.5 bg-[#FBBF24] hover:bg-[#F59E0B] text-gray-900 font-bold rounded-xl transition-colors">
             Create Your Profile
           </button>
         </div>
@@ -32,7 +55,7 @@ const RoleSelection = () => {
           <p className="text-gray-500 leading-relaxed mb-10 max-w-sm">
             Search, filter, and connect with verified talents for events, sponsorships, and collaborations.
           </p>
-          <button className="w-full sm:w-auto px-10 py-3.5 bg-[#1F2937] hover:bg-[#111827] text-white font-bold rounded-xl transition-colors">
+          <button onClick={handleExplore} className="w-full sm:w-auto px-10 py-3.5 bg-[#1F2937] hover:bg-[#111827] text-white font-bold rounded-xl transition-colors">
             Start Exploring
           </button>
         </div>
