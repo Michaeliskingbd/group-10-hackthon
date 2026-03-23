@@ -13,15 +13,20 @@ import Howitworks from "./component/Howitworks";
 import TalentCard from "./components/TalentCard";
 import HomePage from "./page/HomePage";
 import ProfileForm from "./components/ProfileStep/ProfileForm";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import TalentDashboard from "./components/TalentDashboard";
 
 
 function Home() {
   return (
     <>
+     <Navbar />
       <Hero />
       <FeaturedTalents />
       <HomePage />
        <Howitworks />
+        <FooterSection />
     </>
   );
 }
@@ -32,7 +37,7 @@ export default function App() {
     <div>
     <BrowserRouter>
     
-        <Navbar />
+       
        
         <Routes>
         
@@ -44,6 +49,9 @@ export default function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/form" element={<ProfileForm />} />
           <Route path="/howitworks" element={<Howitworks />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
+          <Route path="/TalentDashboard" element={<TalentDashboard />} />
 
 
         </Routes>
@@ -51,7 +59,7 @@ export default function App() {
       
    
     </BrowserRouter>
-       <FooterSection /> 
+       
        </div>
   );
 }
