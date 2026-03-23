@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ALL_TALENTS } from "../data/talents";
 
@@ -59,6 +60,24 @@ export default function TalentProfile() {
 
   const goToPayment = () => {
     navigate("/payment", { state: { talentName: talent.name, type: "hire" } });
+  };
+
+  
+  const [videoFile, setVideoFile]   = useState(null);   
+  const [videoURL, setVideoURL]     = useState(null);   
+  const [isPlaying, setIsPlaying]   = useState(false);  
+  const handleVideoUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setVideoFile(file);
+    setVideoURL(URL.createObjectURL(file)); 
+    setIsPlaying(false);
+  };
+
+  const handleRemoveVideo = () => {
+    setVideoFile(null);
+    setVideoURL(null);
+    setIsPlaying(false);
   };
 
   return (
@@ -147,14 +166,71 @@ export default function TalentProfile() {
           <div className="flex-1 min-w-0 space-y-5">
 
             {/* Performance Reel */}
-            <div className="bg-white rounded-2xl border border-gray-200 p-6 flex flex-col items-center justify-center min-h-[260px]">
-              <button className="w-16 h-16 rounded-full bg-gray-100 hover:bg-teal-50 flex items-center justify-center mb-4 transition-colors group">
-                <svg className="w-6 h-6 text-teal-700" fill="currentColor" viewBox="0 0 24 24">
-                  <polygon points="5 3 19 12 5 21 5 3" />
-                </svg>
-              </button>
-              <p className="text-base font-semibold text-gray-700">Performance Reel</p>
-              <p className="text-sm text-gray-400 mt-1">Watch Talent Profile's highlight video</p>
+            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+
+              {/* Header row */}
+              <div className="flex items-center justify-between px-6 pt-5 pb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-gray-900">Performance Reel</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Upload a highlight video for this talent</p>
+                </div>
+                {/* Remove button — only shows when a video is uploaded */}
+                {videoFile && (
+                  <button
+                    onClick={handleRemoveVideo}
+                    className="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    Remove
+                  </button>
+                )}
+              </div>
+
+              {/* Video area */}
+              {videoURL ? (
+                // ── Uploaded video player ──
+                <div className="relative bg-black">
+                  <video
+                    src={videoURL}
+                    className="w-full max-h-72 object-contain"
+                    controls
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                  />
+                  {/* File name badge */}
+                  <div className="px-6 py-3 flex items-center gap-2 border-t border-gray-100">
+                    <svg className="w-4 h-4 text-teal-600 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                    </svg>
+                    <span className="text-xs text-gray-600 truncate">{videoFile?.name}</span>
+                    <span className="text-xs text-gray-400 flex-shrink-0 ml-auto">
+                      {videoFile ? (videoFile.size / (1024 * 1024)).toFixed(1) + " MB" : ""}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                // ── Upload drop zone ──
+                <label className="flex flex-col items-center justify-center min-h-[220px] mx-6 mb-6 border-2 border-dashed border-gray-200 hover:border-teal-400 rounded-2xl cursor-pointer transition-colors group">
+                  <input
+                    type="file"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={handleVideoUpload}
+                  />
+                  {/* Upload icon */}
+                  <div className="w-14 h-14 bg-gray-100 group-hover:bg-teal-50 rounded-full flex items-center justify-center mb-4 transition-colors">
+                    <svg className="w-6 h-6 text-gray-400 group-hover:text-teal-600 transition-colors" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                    </svg>
+                  </div>
+                  <p className="text-sm font-semibold text-gray-700 group-hover:text-teal-700 transition-colors">
+                    Click to upload a video
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">MP4, MOV, AVI, WebM supported</p>
+                </label>
+              )}
             </div>
 
             {/* About */}

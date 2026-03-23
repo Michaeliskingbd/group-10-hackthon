@@ -2,19 +2,20 @@ import React from "react";
 import { useState, useMemo } from "react";
 import TalentCard from "./TalentCard";
 import { ALL_TALENTS, CATEGORIES, SECTIONS } from "../data/talents";
+import FooterSection from "../component/FooterSection";
 
 const MAX_PRICE = 500000;
 
 export default function Explore() {
   // ── Top bar state ─────────────────────────────────────────────────────────
-  const [search, setSearch]                   = useState("");
+  const [search, setSearch]  = useState("");
   const [categoryDropdown, setCategoryDropdown] = useState("All Categories");
   const [sectionDropdown, setSectionDropdown]   = useState("All Sections");
 
-  // ── Sidebar state ─────────────────────────────────────────────────────────
+  // use state for category selection
   const [activeCategory, setActiveCategory] = useState("All");
   const [activeSection, setActiveSection]   = useState("All");
-  const [priceRange, setPriceRange]         = useState(MAX_PRICE);
+  const [priceRange, setPriceRange]    = useState(MAX_PRICE);
 
   // ── Mobile filter drawer ──────────────────────────────────────────────────
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -49,7 +50,8 @@ export default function Explore() {
       const matchSearch =
         t.name.toLowerCase().includes(search.toLowerCase()) ||
         t.category.toLowerCase().includes(search.toLowerCase()) ||
-        t.bio.toLowerCase().includes(search.toLowerCase());
+        t.bio.toLowerCase().includes(search.toLowerCase()) 
+        
 
       const matchCategory = activeCategory === "All" || t.category === activeCategory;
 
@@ -102,7 +104,7 @@ export default function Explore() {
           type="range"
           min={0}
           max={MAX_PRICE}
-          step={5000}
+          step="none"
           value={priceRange}
           onChange={(e) => setPriceRange(Number(e.target.value))}
           className="w-full accent-gray-900 cursor-pointer"
@@ -135,8 +137,10 @@ export default function Explore() {
     </div>
   );
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  
   return (
+
+    <section>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
       {/* Page title */}
@@ -301,5 +305,7 @@ export default function Explore() {
         </div>
       </div>
     </div>
+     <FooterSection />
+    </section>
   );
 }
