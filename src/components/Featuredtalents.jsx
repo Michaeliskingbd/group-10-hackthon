@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TalentCard from "./TalentCard";
 import { ALL_TALENTS } from "../data/talents";
+import "aos/dist/aos.css";
+import Aos from "aos";
 
 // Show first 4 talents on the home page
 const FEATURED = ALL_TALENTS.slice(0, 4);
 
 export default function FeaturedTalents() {
+
+   useEffect(() => {
+      Aos.init({
+      })
+   }, [])
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 py-14" data-aos ="fade-up" data-aos-duration = "800" >
 
       {/* Section header */}
       <div className="text-center mb-10">

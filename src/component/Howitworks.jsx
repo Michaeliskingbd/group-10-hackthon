@@ -78,7 +78,7 @@ const Howitworks = () => {
   }, []);
 
   return (
-    <section className="bg-gray-50 py-20 px-6">
+    <section className="bg-gray-50 py-20 px-6" id="howItworks">
       
       
       <div className="text-center mb-16">

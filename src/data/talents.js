@@ -1,6 +1,5 @@
-// ─── SINGLE SOURCE OF TRUTH ───────────────────────────────────────────────────
-// Every component imports from here. Never duplicate talent data elsewhere.
-
+//  SINGLE SOURCE OF TRUTH 
+// Every component imports from here.
 export const ALL_TALENTS = [
   {
     id: 1,
