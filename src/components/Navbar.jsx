@@ -13,9 +13,11 @@ export default function Navbar() {
     window.scroll(0,0)
   }
 
-  const howitworks = () => {
-    navigate('/howitworks')
+  const Login = () => {
+    navigate('/Login')
   }
+
+
 
   // NavLink className helper — active = underlined, inactive = gray
   const navClass = ({ isActive }) =>
@@ -37,8 +39,8 @@ export default function Navbar() {
 
        
         <div className="hidden md:flex items-center gap-8 text-sm">
+           <NavLink to='/'  className={navClass}>Home </NavLink>
           <NavLink to="/explore"     className={navClass}>Explore Talents</NavLink>
-          <p   className={navClass}>Categories </p>
           <Link to="howItworks" smooth={true} duration={500}>
           <p   className={navClass}>How It Works</p>
           </Link>
@@ -47,7 +49,8 @@ export default function Navbar() {
 
       
         <div className="hidden md:flex items-center gap-3">
-          <button  className="text-sm text-gray-700 font-medium px-3 py-2 hover:text-gray-900 transition-colors">
+         
+          <button onClick={Login} className="text-sm text-gray-700 font-medium px-3 py-2 hover:text-gray-900 transition-colors">
             Log In
           </button>
           <button onClick={goto} className="text-sm bg-gray-900 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-700 transition-colors">
@@ -75,12 +78,12 @@ export default function Navbar() {
       {/* ── Mobile dropdown ── */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-1">
+           <NavLink to="/"   onClick={() => setMenuOpen(false)} className="block text-sm text-gray-500 py-2.5">Home</NavLink>
           <NavLink to="/explore"      onClick={() => setMenuOpen(false)} className="block text-sm font-semibold text-gray-900 py-2.5">Explore Talents</NavLink>
-          <NavLink to="/categories"   onClick={() => setMenuOpen(false)} className="block text-sm text-gray-500 py-2.5">Categories</NavLink>
           <NavLink to="/how-it-works" onClick={() => setMenuOpen(false)} className="block text-sm text-gray-500 py-2.5">How It Works</NavLink>
           <div className="flex gap-3 pt-3 border-t border-gray-100 mt-2">
-            <button className="flex-1 text-sm border border-gray-300 rounded-lg py-2.5 font-medium text-gray-700">Log In</button>
-            <button className="flex-1 text-sm bg-gray-900 text-white rounded-lg py-2.5 font-semibold">Create Profile</button>
+            <button  onClick={Login}  className="flex-1 text-sm border border-gray-300 rounded-lg py-2.5 font-medium text-gray-700">Log In</button>
+            <button onClick={goto} className="flex-1 text-sm bg-gray-900 text-white rounded-lg py-2.5 font-semibold">Create Profile</button>
           </div>
         </div>
       )}

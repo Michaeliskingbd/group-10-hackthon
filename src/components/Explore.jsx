@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useMemo } from "react";
 import TalentCard from "./TalentCard";
 import { ALL_TALENTS, CATEGORIES, SECTIONS } from "../data/talents";
+import FooterSection from "../component/FooterSection";
 
 const MAX_PRICE = 500000;
 
@@ -103,7 +104,7 @@ export default function Explore() {
           type="range"
           min={0}
           max={MAX_PRICE}
-          step={5000}
+          step="none"
           value={priceRange}
           onChange={(e) => setPriceRange(Number(e.target.value))}
           className="w-full accent-gray-900 cursor-pointer"
@@ -136,8 +137,10 @@ export default function Explore() {
     </div>
   );
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  
   return (
+
+    <section>
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
 
       {/* Page title */}
@@ -302,5 +305,7 @@ export default function Explore() {
         </div>
       </div>
     </div>
+     <FooterSection />
+    </section>
   );
 }

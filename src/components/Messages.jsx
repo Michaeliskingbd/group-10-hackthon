@@ -2,7 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-// Mock conversations — in a real app this would come from a backend
 const CONVERSATIONS = [
   {
     id: 1,
@@ -48,17 +47,18 @@ export default function Messages() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // If navigated from a talent profile, pre-select that conversation (or default to first)
   const passedTalentName = location.state?.talentName;
   const defaultConvo = CONVERSATIONS.find((c) => c.name === passedTalentName) || CONVERSATIONS[0];
 
-  const [activeConvo, setActiveConvo] = useState(defaultConvo);
-  const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState(activeConvo.messages);
+  const [activeConvo, setActiveConvo]   = useState(defaultConvo);
+  const [newMessage,  setNewMessage]    = useState("");
+  const [messages,    setMessages]      = useState(defaultConvo.messages);
+  const [showSidebar, setShowSidebar]   = useState(false); // mobile: show convo list
 
   const handleSelectConvo = (convo) => {
     setActiveConvo(convo);
     setMessages(convo.messages);
+    setShowSidebar(false); // auto-close sidebar on mobile after selecting
   };
 
   const handleSend = () => {
@@ -74,14 +74,47 @@ export default function Messages() {
     }
   };
 
+  // ── Avatar initials ────────────────────────────────────────────────────────
+  const initials = (name) => name.split(" ").map((n) => n[0]).join("").toUpperCase();
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-      <div className="flex h-[calc(100vh-140px)] bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+      <div className="flex h-[calc(100vh-140px)] bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm relative">
 
-        {/* ── LEFT: Conversation list ── */}
-        <div className="w-72 flex-shrink-0 border-r border-gray-100 flex flex-col">
-          <div className="p-5 border-b border-gray-100">
+        {/* ══════════════════════════════════════════════════════
+            LEFT — Conversation list
+            Desktop: always visible (w-72)
+            Mobile:  hidden by default, slides in as overlay when showSidebar=true
+        ══════════════════════════════════════════════════════ */}
+
+        {/* Mobile overlay backdrop */}
+        {showSidebar && (
+          <div
+            className="absolute inset-0 bg-black/30 z-20 md:hidden"
+            onClick={() => setShowSidebar(false)}
+          />
+        )}
+
+        <div className={`
+          absolute md:relative z-30 md:z-auto
+          h-full flex-shrink-0 flex flex-col
+          bg-white border-r border-gray-100
+          w-72
+          transition-transform duration-300 ease-in-out
+          ${showSidebar ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}>
+          <div className="p-5 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-lg font-bold text-gray-900">Messages</h2>
+            {/* Close button — mobile only */}
+            <button
+              onClick={() => setShowSidebar(false)}
+              className="md:hidden text-gray-400 hover:text-gray-700 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
           <div className="flex-1 overflow-y-auto">
@@ -89,63 +122,92 @@ export default function Messages() {
               <button
                 key={convo.id}
                 onClick={() => handleSelectConvo(convo)}
-                className={`w-full text-left px-5 py-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${
-                  activeConvo.id === convo.id ? "bg-gray-50" : ""
+                className={`w-full text-left px-4 py-4 border-b border-gray-50 hover:bg-gray-50 transition-colors flex items-center gap-3 ${
+                  activeConvo.id === convo.id ? "bg-teal-50 border-l-2 border-l-teal-600" : ""
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <p className="font-semibold text-gray-900 text-sm">{convo.name}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-400">{convo.time}</span>
-                    {convo.unread && <div className="w-2 h-2 rounded-full bg-teal-600" />}
-                  </div>
+                {/* Avatar */}
+                <div className="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                  {initials(convo.name)}
                 </div>
-                <p className="text-xs text-gray-400 truncate">{convo.preview}</p>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <p className="font-semibold text-gray-900 text-sm truncate">{convo.name}</p>
+                    <div className="flex items-center gap-1.5 flex-shrink-0 ml-2">
+                      <span className="text-xs text-gray-400">{convo.time}</span>
+                      {convo.unread && <div className="w-2 h-2 rounded-full bg-teal-600" />}
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-400 truncate">{convo.preview}</p>
+                </div>
               </button>
             ))}
           </div>
         </div>
 
-        {/* ── RIGHT: Chat window ── */}
+        {/* ══════════════════════════════════════════════════════
+            RIGHT — Chat window
+        ══════════════════════════════════════════════════════ */}
         <div className="flex-1 min-w-0 flex flex-col">
 
           {/* Chat header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-            <div>
-              <p className="font-bold text-gray-900">{activeConvo.name}</p>
-              <span className="inline-block text-xs bg-gray-100 text-gray-600 px-2.5 py-0.5 rounded-full mt-0.5">
-                {activeConvo.role}
-              </span>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-gray-100 gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+
+              {/* Hamburger — mobile only, opens convo list */}
+              <button
+                onClick={() => setShowSidebar(true)}
+                className="md:hidden text-gray-500 hover:text-gray-800 transition-colors flex-shrink-0"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+
+              {/* Avatar */}
+              <div className="w-9 h-9 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-sm font-bold flex-shrink-0">
+                {initials(activeConvo.name)}
+              </div>
+
+              <div className="min-w-0">
+                <p className="font-bold text-gray-900 text-sm truncate">{activeConvo.name}</p>
+                <span className="text-xs text-gray-400">{activeConvo.role}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="flex items-center gap-2 border border-gray-300 text-gray-700 text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+
+            {/* Action buttons */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {/* Send Offer — icon only on mobile, full text on sm+ */}
+              <button className="flex items-center gap-1.5 border border-gray-300 text-gray-700 text-xs sm:text-sm font-semibold px-2.5 sm:px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <circle cx="12" cy="12" r="10" /><path d="M12 8v4m0 4h.01" />
                 </svg>
-                Send Offer
+                <span className="hidden sm:inline">Send Offer</span>
               </button>
+
+              {/* Accept Offer */}
               <button
                 onClick={() => navigate("/payment", { state: { talentName: activeConvo.name } })}
-                className="flex items-center gap-2 bg-teal-700 hover:bg-teal-800 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 bg-teal-700 hover:bg-teal-800 text-white text-xs sm:text-sm font-semibold px-2.5 sm:px-4 py-2 rounded-lg transition-colors"
               >
-                <svg className="w-4 h-4 fill-none stroke-current" strokeWidth={2} viewBox="0 0 24 24">
+                <svg className="w-4 h-4 flex-shrink-0 fill-none stroke-current" strokeWidth={2} viewBox="0 0 24 24">
                   <path d="M20 6H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z" />
                   <path d="M2 10h20" />
                 </svg>
-                Accept Offer
+                <span className="hidden sm:inline">Accept Offer</span>
               </button>
             </div>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-4">
+          {/* Messages area */}
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-4">
             {messages.map((msg) => (
               <div
                 key={msg.id}
                 className={`flex ${msg.from === "me" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-sm px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                  className={`max-w-[75%] sm:max-w-sm px-4 py-3 rounded-2xl text-sm leading-relaxed ${
                     msg.from === "me"
                       ? "bg-teal-700 text-white rounded-tr-sm"
                       : "bg-gray-100 text-gray-800 rounded-tl-sm"
@@ -158,7 +220,7 @@ export default function Messages() {
           </div>
 
           {/* Message input */}
-          <div className="px-6 py-4 border-t border-gray-100 flex items-center gap-3">
+          <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex items-center gap-3">
             <button className="text-gray-400 hover:text-gray-600 flex-shrink-0">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
@@ -170,7 +232,7 @@ export default function Messages() {
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message..."
-              className="flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none"
+              className="flex-1 text-sm text-gray-700 placeholder-gray-400 outline-none min-w-0"
             />
             <button
               onClick={handleSend}
