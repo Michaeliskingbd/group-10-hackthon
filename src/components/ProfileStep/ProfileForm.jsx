@@ -4,12 +4,20 @@ import BasicInfoView from "./BasicInfo";
 import MediaView from "./MediaUpload";
 import AboutView from "./About";
 import ContactPricingView from "./Pricing";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const steps = ["Basic Info", "Media", "About", "Contact & Pricing"];
 
 const ProfileForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+   const navigate = useNavigate()
+
+  const back = () => {
+     navigate('/TalentDashboard')
+     window.scroll(0,0)
+  }
 
   // State for all form fields
   const [formData, setFormData] = useState({
@@ -91,7 +99,7 @@ const ProfileForm = () => {
             Your talent profile has been successfully created. You are now ready to get discovered!
           </p>
           <button 
-            onClick={() => window.location.reload()}
+            onClick={back}
             className="w-full py-4 bg-[#2D7A8B] text-white rounded-2xl font-bold hover:bg-[#236371] transition-all shadow-lg shadow-[#2D7A8B]/20"
           >
             Go to Dashboard
