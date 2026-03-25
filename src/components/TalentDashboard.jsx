@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 // ── Mock data ──────────────────────────────────────────────────────────────────
 const USER = {
-  name: "Amara Diallo",
-  email: "amara@stagelink.io",
+  name: "Farouq Muhammed",
+  email: "Farouq@stagelink.io",
   role: "Vocalist",
   plan: "Pro",
-  avatar: "AD",
+  avatar: "FM  ",
   rating: 4.9,
   reviews: 38,
   location: "Lagos, Nigeria",
@@ -30,7 +30,7 @@ const OFFERS = [
 ];
 
 const REVIEWS = [
-  { id: 1, client: "EventPro Lagos",  rating: 5, text: "Amara was absolutely phenomenal. The crowd loved every second of her performance.", date: "Feb 2026" },
+  { id: 1, client: "EventPro Lagos",  rating: 5, text: "Farouq was absolutely phenomenal. The crowd loved every second of her performance.", date: "Feb 2026" },
   { id: 2, client: "Royal Events",    rating: 5, text: "Professional, punctual, and incredibly talented. Will book again without hesitation.", date: "Jan 2026" },
   { id: 3, client: "Afro Vibes Ltd",  rating: 4, text: "Great energy and stage presence. Highly recommended for any event.", date: "Jan 2026" },
 ];
