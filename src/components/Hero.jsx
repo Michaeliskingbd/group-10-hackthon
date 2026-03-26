@@ -6,17 +6,17 @@ export default function Hero() {
 
   return (
     <div
-      className="relative min-h-[580px] flex items-center justify-center text-white text-center px-4"
+      className="relative min-h-[580px] flex items-center justify-center text-white text-center px-4 z-88"
       style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1540039155733-5bb30b4f8e5d?w=1400')",
+        backgroundImage: "url('https://stage-link-talent.lovable.app/assets/hero-image-BtNdPGF2.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Teal overlay */}
-      <div className="absolute inset-0 bg-teal-700/70" />
+      {/* bg overlay using opacity */}
+      <div className="absolute inset-0 bg-teal-400/60 " />
 
-      {/* Content */}
+      {/* styling of the content in the hero section */}
       <div className="relative z-10 max-w-3xl mx-auto">
 
         {/* Trust badge */}

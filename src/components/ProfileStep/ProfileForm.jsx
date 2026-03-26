@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import Select from "react-select";
-import { Country, City } from "country-state-city";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
+// Import your sub-components
+import BasicInfoView from "./BasicInfo";
+import MediaView from "./MediaUpload";
+import AboutView from "./About";
+import ContactPricingView from "./Pricing";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const steps = ["Basic Info", "Media", "About", "Contact & Pricing"];
 
@@ -37,7 +39,14 @@ const TalentProfileForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [previews, setPreviews] = useState({ photo: null, video: null });
 
-  // --- RESTORED & UPDATED STATE ---
+   const navigate = useNavigate()
+
+  const back = () => {
+     navigate('/TalentDashboard')
+     window.scroll(0,0)
+  }
+
+  // State for all form fields
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -136,9 +145,9 @@ const TalentProfileForm = () => {
           <p className="text-gray-500 mb-8">
             Your talent profile has been successfully created.
           </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="w-full py-4 bg-[#2D7A8B] text-white rounded-2xl font-bold hover:bg-[#236371] transition-all"
+          <button 
+            onClick={back}
+            className="w-full py-4 bg-[#2D7A8B] text-white rounded-2xl font-bold hover:bg-[#236371] transition-all shadow-lg shadow-[#2D7A8B]/20"
           >
             Go to Dashboard
           </button>

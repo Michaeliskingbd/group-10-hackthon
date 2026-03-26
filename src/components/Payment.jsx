@@ -163,7 +163,7 @@ function PayPalForm() {
   );
 }
 
-// ── Main Payment page ─────────────────────────────────────────────────────────
+
 export default function Payment() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -173,17 +173,17 @@ export default function Payment() {
 
   const serviceFee    = 80;
 
-  const [amount, setAmount]           = useState("800");
+  const [amount, setAmount]  = useState("800");
   const [selectedMethod, setSelectedMethod] = useState("card");
-  const [paid, setPaid]               = useState(false);
+  const [paid, setPaid]   = useState(false);
 
   const parsedAmount = parseFloat(amount) || 0;
-  const total        = parsedAmount + serviceFee;
+  const total = parsedAmount + serviceFee;
 
   const handleConfirm = () => {
     if (!amount || parsedAmount <= 0) return;
     setPaid(true);
-    setTimeout(() => navigate("/"), 2500);
+    setTimeout(() => navigate("/Dashboard"), 3000);
   };
 
   // ── Success screen ──
@@ -197,7 +197,7 @@ export default function Payment() {
         </div>
         <h2 className="text-xl font-bold text-gray-900 mb-2">Payment Confirmed!</h2>
         <p className="text-gray-500 text-sm">Your booking with {talentName} is confirmed.</p>
-        <p className="text-gray-400 text-xs mt-1">Redirecting to home...</p>
+        <p className="text-gray-400 text-xs mt-1">Redirecting to your dashboard...</p>
       </div>
     );
   }

@@ -36,7 +36,7 @@ export default function Login() {
 
   const validate = () => {
     const e = {};
-    if (!email)                           e.email    = "Email is required";
+    if (!email)   e.email    = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(email)) e.email    = "Enter a valid email";
     if (!password)                        e.password = "Password is required";
     else if (password.length < 6)         e.password = "Min 6 characters";
@@ -62,7 +62,8 @@ export default function Login() {
     window.scroll(0,0)
   }
 
-  const TD = () => {
+  const TD = (ev) => {
+    ev.preventDefault()
     navigate("/TalentDashboard")
     window.scroll(0,0)
   }
